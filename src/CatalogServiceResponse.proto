@@ -1,0 +1,116 @@
+package com.c9a.buffers;
+
+option java_package = "com.c9a.buffers";
+option java_outer_classname = "CatalogServiceResponseProtocalBuffer";
+
+// RESPONSE OBJECTS
+message CatalogCollectionResponse {
+    // Version of the API
+    required uint32 version = 1;
+    // Return the Collection(s)
+    repeated CatalogCollectionShallow collections = 2;
+    required Response response = 3;
+}
+
+message ReferenceResponse {
+    // Version of the API
+    required uint32 version = 1;
+    // Return the reference, it is optional if a reference request could not find a reference
+    optional Reference reference = 2;
+    required Response response = 3;
+}
+
+message Response {
+   // Version of the API
+   required uint32 version = 1;
+   optional ResponseCode responseCode = 2 [default = SUCCESS];
+   optional string responseMessage = 3 [default = ""];
+}
+
+// POJO's for both request and response
+// Shallow version just gets the current catalog collection and holds key value pairs to get the the other connected catalog collection(s)
+message CatalogCollectionShallow {
+   required string uniqueId = 1;
+   required string userId = 2;
+   required string partitionId = 3;
+   required int64 createDateInMill = 4;
+   optional int64 lastUpdateInMill = 5;
+   
+   required string name = 6;
+
+   optional KeyValuePair parentCollection = 7;
+   // Holds the collection name, and the uniqueId, to be able to retrieve it
+   repeated KeyValuePair nestedColelctions  = 8;
+
+   //Holds the unique id of the catalog collection and the catalog collection name, use the unique id to ask for that specific catalog collection
+   optional KeyValuePair sharedFromCollection = 9;
+   //Holds the unique id and the name of the collection of the shared to catalog collections
+   repeated KeyValuePair sharedToCollections = 10;
+   // List of references inside the catalog collection
+   repeated Reference references = 11;
+   repeated Permission permissions = 12;
+   repeated KeyValuePair attributes = 13;
+   
+   optional int64 archived = 14;
+   
+   repeated KeyValuePair nestedArchivedColelctions  = 15;
+}
+
+enum Permission {
+   EDIT_PERMISSION_ID = 1;
+   SHARE_PERMISSION_ID = 2;
+   CLONE_PERMISSION_ID = 3;
+   ADD_PERMISSION_ID = 4;
+}
+
+message Reference {
+   required string uniqueId = 1;
+   required string name = 2;
+   required string userId = 3;
+   required string partitionId = 4;
+   required int64 createDateInMill = 5;
+   required int64 lastUpdateInMill = 6;
+   
+   required KeyValuePair parentCollection = 7;
+   required Document document = 8;
+   optional Reference createdFrom = 9;
+   repeated Permission permissions = 10;
+   repeated KeyValuePair attributes = 11;
+   
+   optional int64 archived = 12;
+}
+
+message Document {
+   required string uniqueId = 1;
+   required string userId = 2;
+   required string partitionId = 3;
+   required int64 createDateInMill = 4;
+   required int64 lastUpdateInMill = 5;
+   
+   required string name = 6;
+   optional string notes = 7;
+   optional string description = 8;
+   required bytes content = 9;
+   repeated KeyValuePair attributes = 10;
+}
+
+message KeyValuePair { 
+   required string key = 1;
+   required string value = 2;
+}
+
+enum ResponseCode {
+   SUCCESS = 1;
+   COLLECTION_NOT_FOUND = 2;
+   COLLECTION_CAN_NOT_BE_MODIFIED = 3;
+   COLLECTION_CAN_NOT_BE_SHARED = 4;
+   
+   REFERENCE_NOT_FOUND = 5;
+   REFERENCE_CAN_NOT_BE_MODIFIED = 6;
+   REFERENCE_CAN_NOT_BE_SHARED = 7;
+   DOCUMENT_TYPE_NOT_FOUND = 8;
+   
+   CATALOG_NAME_INVALID = 9;
+   
+   UNKNOWN_ERROR = 10;
+}

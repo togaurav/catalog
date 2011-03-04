@@ -1,0 +1,50 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:amq="http://activemq.apache.org/schema/core" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    
+    <!-- Hibernate transaction manager --> 
+   <bean id="transactionManager"
+      class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+      p:sessionFactory-ref="sessionFactory" />
+
+   <tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!--  CREATE AN EMBEDDED ACTIVEMQ BROKER -->
+	<amq:broker useJmx="false" persistent="false">
+		<amq:transportConnectors>
+			<amq:transportConnector uri="tcp://localhost:61618" />
+		</amq:transportConnectors>
+	</amq:broker>
+	
+	<!--  ACTIVEMQ DESTINATION  -->
+	<amq:queue id="destination"
+		physicalName="com.c9a.catalog.cache.queue" />
+		
+	<bean id="consumerJmsTemplate" class="org.springframework.jms.core.JmsTemplate" p:connectionFactory-ref="jmsFactory"/>
+	
+	<!-- SIMPLE JMS CONNECTION FACTORY -->
+	<bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+		destroy-method="stop">
+		<property name="connectionFactory">
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory" p:brokerURL="tcp://localhost:61618"/>
+		</property>
+	</bean>
+	
+	<!-- SPRING JMS TEMPLATE -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate"
+      	p:connectionFactory-ref="jmsFactory"/>
+	
+	<!-- ASYNC SERVICE LISTENER CONTAINER -->
+	<bean id="asyncProcessServiceListenerContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer"
+		p:concurrentConsumers="5"
+		p:connectionFactory-ref="jmsFactory"
+		p:destination-ref="destination"
+		p:messageListener-ref="asyncProcessServiceListener"
+		p:transactionManager-ref="transactionManager"/>
+</beans>

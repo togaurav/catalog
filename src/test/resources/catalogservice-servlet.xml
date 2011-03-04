@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+   <mvc:annotation-driven />
+
+   <!-- Saves a locale change using a cookie -->
+   <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+   
+   <!-- USED TO KEEP A SESSION OPEN FOR THE LIFE OF THE REQUEST - NO ADDITIONAL SESSION MANAGEMENT NEEDED 
+   
+   OpenSessionInViewInterceptor
+   -->
+   <mvc:interceptors>
+      <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+      <bean class="com.c9a.service.spring.MultipleSchemaOpenSessionInViewInterceptor" p:flushModeName="FLUSH_AUTO">
+         <property name="sessionFactory" ref="sessionFactory"/>
+      </bean>
+   </mvc:interceptors>
+
+   <!-- SCAN FOR ALL CONTROLLER CLASSES -->
+   <context:component-scan base-package="com.c9a.catalog.web" />
+
+</beans>

@@ -1,0 +1,137 @@
+package com.c9a.buffers;
+
+option java_package = "com.c9a.buffers";
+option java_outer_classname = "CatalogSearchServiceRequestProtocalBuffer";
+
+import "CatalogServiceResponse.proto";
+
+//This will perform a search for collections with a given name
+//This request will return a list of collections, since there could be multiple collections with the given name in the structure
+message FindCollectionByNameRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    //The name of the collection to search for
+    required string name = 4;
+    //The root of the collection to perform the search
+    required string parentCollectionUniqueId = 5;
+    //Let the search know if it should search the nested collections
+    required uint32 nestedSearch = 6;
+}
+
+//This will perform a search for collections with a given name
+//This request will return a list of collections, since there could be multiple collections with the given name in the structure
+message FindCollectionWithAttributeKeysRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    //The name of the collection to search for
+    required string name = 4;
+    //The root of the collection to perform the search
+    required string parentCollectionUniqueId = 5;
+    //Let the search know if it should search the nested collections
+    required uint32 nestedSearch = 6;
+    
+    repeated string keys = 7;
+    required uint32 matchAll = 8;
+}
+
+//This will perform a search for collections with a given name
+//This request will return a list of collections, since there could be multiple collections with the given name in the structure
+message FindCollectionWithAttributeValuesRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    //The name of the collection to search for
+    required string name = 4;
+    //The root of the collection to perform the search
+    required string parentCollectionUniqueId = 5;
+    //Let the search know if it should search the nested collections
+    required uint32 nestedSearch = 6;
+    
+    repeated string values = 7;
+    required uint32 matchAll = 8;
+}
+
+//This will perform a search for collections with a given name
+//This request will return a list of collections, since there could be multiple collections with the given name in the structure
+message FindCollectionWithAttributeKeysAndValuesRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    //The name of the collection to search for
+    required string name = 4;
+    //The root of the collection to perform the search
+    required string parentCollectionUniqueId = 5;
+    //Let the search know if it should search the nested collections
+    required uint32 nestedSearch = 6;
+    
+    repeated KeyValuePair keysAndValues = 7;
+    required uint32 matchAll = 8;
+}
+
+//This will perform a search for references with a given name
+//This request will return a list of refeences, since there could be multiple collections with the given name in the structure
+message FindReferenceByNameRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    //The name of the reference to search for
+    required string name = 4;
+    //The root of the collection to perform the search
+    required string parentCollectionUniqueId = 5;
+    //Let the search know if it should search the nested collections
+    required uint32 nestedSearch = 6;
+}
+
+//This will perform a search for documents with a given name
+//This request will return a list of refeences, since there could be multiple collections with the given name in the structure
+//It will no return the document directly, all access to a document will be through a reference
+//so in this case there needs to be a reference that holds a connection to a document with 
+message FindDocumentByNameRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    //The name of the collection to search for
+    required string name = 4;
+    //The root of the collection to perform the search
+    required string parentCollectionUniqueId = 5;
+    //Let the search know if it should search the nested collections
+    required uint32 nestedSearch = 6;
+}

@@ -1,0 +1,320 @@
+package com.c9a.buffers;
+
+option java_package = "com.c9a.buffers";
+option java_outer_classname = "CatalogServiceRequestProtocalBuffer";
+
+import "CatalogServiceResponse.proto";
+//---------------------------------------------//
+//---------- Query Definitions ----------------//
+//---------------------------------------------//
+
+// Used to Interact with the catalog Service
+
+// This message is used to pull the baseRequest out of all other messages
+// Used internally to be able to dynamically swap the datasource for the given partitionId
+message GenericRequest {
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+}
+
+// REQUEST Objects
+
+// Is not currently implemented - since each customer has a different schema, this is not an easy thing to do.
+// It is here as a place holder and you should not expect this to work until these comments have been removed
+message GetRootCatalogRequest {
+   // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+}
+
+// This request will return the root collection for a given partitionId, which must be a part of the base request
+// If the root partition collection is not yet created, one will be created and return a empty collection, since there are no
+// users yet in this collection
+message GetRootPartitionCollectionRequest {
+// Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+}
+
+message GetCollectionByPathRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    //This is the path to the collection
+    required string path = 4;
+    //Flag to let the system know to try to create the collection at this path, it will attempt to create all missing collections to make this collection 
+    optional uint32 createIfNotExist = 5;
+    // Needed if the createIfNotExist flag is true
+    repeated KeyValuePair permissions = 6;
+}
+
+// This request will return a user's root collection for a given partition
+// Requires that the user id is filled out will error if not present in baseRequest 
+message GetUserRootCollectionRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+}
+
+// This request will return the root collection for a specific application for a given user and partition
+// If the collection is not present a empty one will be created
+message GetRootApplicationCollectionForUserRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    required string applicationName = 4;
+}
+
+
+// This request will attempt to add a new collection to an existing collection with the supplied values
+// This request will return a CatalogCollectionResponse, in that response you can find out if the request was successfu;
+message AddCollectionRequest {
+
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    // The collection that will hold the new collection
+    required string parentCatalogCollectionId = 4;
+    
+    // required new name of collection
+    required string collectionName = 5;
+    
+    repeated Permission permissions = 6;
+    repeated KeyValuePair attributes = 7; 
+}
+
+// This request will attempt to add a document to a give collection
+// The result will be a reference
+// If the person in the base request does not have permissions to the collection to add a document they will receive an error
+//
+message AddDocumentRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    // The collection that will hold the new collection
+    required string parentCatalogCollectionId = 4;
+    
+    // required new name of collection
+    required string referenceName = 5;
+    
+    required Document document = 6; 
+    
+    repeated Permission permissions = 7;
+    repeated KeyValuePair attributes = 8;
+}
+
+message AddReferenceRequest {
+
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    // The collection that will hold the new collection
+    required string parentCatalogCollectionId = 4;
+    
+    // required new name of collection
+    required string referenceName = 5;
+    
+    repeated Permission permissions = 6;
+    repeated KeyValuePair attributes = 7;
+    
+    required string documentUniqueId = 8;
+
+}
+
+message GetCollectionRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    required string uniqueId = 4;
+}
+
+message GetReferenceRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    required string uniqueId = 4;
+}
+
+message GetReferenceByPathRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    //This is the path to the reference
+    required string path = 4;
+    //Flag to let the system know to try to create the collection at this path, it will attempt to create all missing collections to make this reference 
+    optional uint32 createIfNotExist = 5;
+    // Needed if the createIfNotExist flag is true
+    repeated KeyValuePair permissions = 6;
+}
+
+message ShareCollectionRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    // The name of the application that is performing the share 
+    // This allows the new collection to go into the correct share collection for a user
+    required string applicationName = 4;
+    required string collectionUniqueId = 5;
+    // The list of user's and partitions to share the collection to
+    repeated KeyValuePair usersAndPartitionsToShareWith = 6;
+    // This the set of permissions that will be applied to the user's and partition's from above
+    repeated Permission permissions = 7;
+}
+
+message ShareReferenceRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    
+    // The name of the application that is performing the share 
+    // This allows the new collection to go into the correct share collection for a user
+    required string applicationName = 4;
+    
+    required string referenceToShareUniqueId = 5;
+    // The list of user's and partitions to share the collection to
+    repeated KeyValuePair usersAndPartitionsToShareWith = 6;
+    // This the set of permissions that will be applied to the user's and partition's from above
+    repeated Permission permissions = 7;
+}
+
+message DeleteCatalogCollectionRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    required string collectionUniqueId = 4;
+}
+
+message DeleteReferenceRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    required string referenceUniqueId = 4;
+}
+
+message ModifyCatalogCollectionRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    // The unique id of the collection to modify
+    required string collectionUniqueId = 4;
+    // The new name of the collection, ignored if null or empty
+    optional string collectionName = 5;
+    // The new parent collection to hold this collection (essentially move it), ignored if null or empty
+    optional string parentCollectionUniqueId = 6;
+    // The new set of permissions to set on the collection, ignored if null or empty
+    repeated Permission permissions = 7;
+    // The new set of attributes to set on the collection, ignore if null or empty    
+    repeated KeyValuePair attributes = 8;
+}
+
+message ModifyReferenceRequest {
+    // Version of the API
+    required uint32 version = 1;
+    // User Id - Owner ID in the Catalog - Should be a SalesForce Id - Catalog Service will not verify/validate
+    // This is optional since not every request to the catalog service will require a userId
+    optional string userId = 2; 
+    // PartitionId of the user, obtained when he logged in. - Catalog Service will not verify/validate
+    // This is required because every request to the catalog will use this id to locate the correct database schema for the given partitionId
+    required string partitionId = 3;
+    // The unique id of the reference to modify
+    required string referenceUniqueId = 4;
+    // The new name of the reference, ignored if null or empty
+    optional string referenceName = 5;
+    // The new parent collection to hold this collection (essentially move it), ignored if null or empty
+    optional string parentCollectionUniqueId = 6;
+    // The new set of permissions to set on the reference, ignored if null or empty
+    repeated Permission permissions = 7;
+    // The new set of attributes to set on the reference, ignore if null or empty
+    repeated KeyValuePair attributes = 8;
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources"/>
+	<classpathentry kind="src" output="target/classes" path="src/main/java"/>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry kind="src" path="src/main/webapp"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="var" path="APP_HOME/commons-httpclient-3.0.1/commons-httpclient-3.0.1.jar"/>
+	<classpathentry kind="var" path="APP_HOME/commons-codec-1.4/commons-codec-1.4.jar"/>
+	<classpathentry kind="var" path="APP_HOME/mockito-1.8.5/mockito-all-1.8.5.jar"/>
+	<classpathentry kind="var" path="APP_HOME/protobuf-2.3.0/protobuf-java-2.3.0.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.core-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.jdbc-3.0.4.RELEASE.jar" sourcepath="/APP_HOME/spring-framework-3.0.4/src/org.springframework.jdbc-sources-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.orm-3.0.4.RELEASE.jar" sourcepath="/APP_HOME/spring-framework-3.0.4/src/org.springframework.orm-sources-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.transaction-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.web-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.context-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.test-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.context.support-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.web.servlet-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.beans-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.asm-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.aop-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.jms-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-3.0.4/dist/org.springframework.expression-3.0.4.RELEASE.jar"/>
+	<classpathentry kind="var" path="APP_HOME/spring-framework-2.0.3/lib/aopalliance/aopalliance.jar"/>
+	<classpathentry kind="var" path="APP_HOME/activemq-5.3.2/activemq-all-5.3.2.jar"/>
+	<classpathentry kind="var" path="APP_HOME/commons-lang-2.2/commons-lang-2.2.jar"/>
+	<classpathentry kind="var" path="APP_HOME/commons-logging-1.1/commons-logging-1.1.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/optional/c3p0/c3p0-0.9.1.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/required/jta-1.1.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/required/javassist-3.12.0.GA.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/required/commons-collections-3.1.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/required/dom4j-1.6.1.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/required/antlr-2.7.6.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/required/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-3.6.0/hibernate3.jar" sourcepath="/M2_REPO/org/hibernate/hibernate-core/3.6.1.Final/hibernate-core-3.6.1.Final-sources.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-validator-4.1.0/lib/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="var" path="APP_HOME/hibernate-validator-4.1.0/hibernate-validator-4.1.0.Final.jar"/>
+	<classpathentry kind="var" path="APP_HOME/mysql-connector-java-5.1.6/mysql-connector-java-5.1.6-bin.jar"/>
+	<classpathentry kind="var" path="APP_HOME/jetty-6.1.21/lib/servlet-api-2.5-20081211.jar"/>
+	<classpathentry kind="var" path="APP_HOME/jetty-6.1.21/lib/jetty-6.1.21.jar"/>
+	<classpathentry kind="var" path="APP_HOME/jetty-6.1.21/lib/jetty-util-6.1.21.jar"/>
+	<classpathentry kind="var" path="APP_HOME/grails-1.0/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="var" path="APP_HOME/jms-1.1/lib/javax.jms.jar"/>
+	<classpathentry kind="var" path="APP_HOME/activemq-5.3.2/lib/activemq-core-5.3.2.jar"/>
+	<classpathentry kind="var" path="APP_HOME/activemq-5.3.2/lib/optional/activemq-pool-5.3.2.jar"/>
+	<classpathentry kind="var" path="APP_HOME/activemq-5.3.2/lib/optional/xbean-spring-3.6.jar"/>
+	<classpathentry kind="var" path="APP_HOME/activemq-5.3.2/lib/optional/org.osgi.core-4.1.0.jar"/>
+	<classpathentry kind="var" path="APP_HOME/commons-pool-1.5.5/commons-pool-1.5.5.jar"/>
+	<classpathentry kind="var" path="APP_HOME/slf4j-1.6.1/slf4j-simple-1.6.1.jar"/>
+	<classpathentry kind="src" path="/Common"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

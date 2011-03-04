@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="targetDataSource" class="com.c9a.catalog.hibernate.CatalogSpecificDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String" />
+		</property>
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy"
+		p:targetDataSource-ref="targetDataSource" />
+
+	<util:properties id="c3p0Properties">
+		<prop key="driverClass">${driverClass}</prop>
+		<prop key="jdbcUrl">${db.url}</prop>
+		<prop key="user">${db.username}</prop>
+		<prop key="password">${db.password}</prop>
+		<prop key="maxIdleTime">${c3p0.maxIdleTime}</prop>
+		<prop key="maxPoolSize">${c3p0.maxPoolSize}</prop>
+		<prop key="serviceSchema">${db.service_schema}</prop>
+	</util:properties>
+
+	<util:properties id="hibernateProperties">
+		<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+		<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+		<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+		<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+	</util:properties>
+
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+
+	<bean id="JPAPrePersistPreUpdateEventListener"
+		class="com.c9a.catalog.hibernate.JPAPrePersistPreUpdateCachableEventListener" />
+
+	<bean id="DeleteFromCacheEventListener" class="com.c9a.catalog.hibernate.DeleteFromCacheEventListener" />
+
+	<util:map id="eventListeners">
+		<entry key="save-update" value-ref="JPAPrePersistPreUpdateEventListener" />
+		<entry key="save" value-ref="JPAPrePersistPreUpdateEventListener" />
+		<entry key="delete" value-ref="DeleteFromCacheEventListener" />
+	</util:map>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		p:lobHandler-ref="defaultLobHandler" 
+		p:packagesToScan="com.c9a.catalog.entities"
+		p:dataSource-ref="dataSource" 
+		p:hibernateProperties-ref="hibernateProperties"
+		p:eventListeners-ref="eventListeners"/>
+</beans>

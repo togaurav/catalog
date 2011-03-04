@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="propertyPlaceholder"
+      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+      p:location="classpath:configuration.properties" />
+
+   <import resource="services-beans-spring-config.xml" />	
+	<import resource="database-app-spring-config.xml" />
+	<import resource="messaging-app-spring-config.xml" />
+	<import resource="transactions-app-spring-config.xml" />
+	
+	<!--  Will use when needing to delete documents with no reference counts.  And any other backround types of execution. -->
+	<!--<import resource="scheduling-quartz-spring-config.xml" />-->
+	<!--  Will use when JMS messaging is needed. -->
+   <!--<import resource="messaging-spring-config.xml" />-->
+</beans>
